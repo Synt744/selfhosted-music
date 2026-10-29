@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install test tools
+        run: python -m pip install -r requirements-dev.txt
+      - name: Run cleaner tests
+        run: python -m pytest -q cleaner/tests
+      - name: Lint Python
+        run: python -m ruff check cleaner
+      - name: Validate Compose configuration
+        run: docker compose --env-file .env.example config --quiet
