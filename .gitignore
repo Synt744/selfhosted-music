@@ -1,0 +1,9 @@
+.env
+.env.*
+!.env.example
+/data/
+/music/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.py[cod]
