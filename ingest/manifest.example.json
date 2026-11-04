@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "tracks": [
+    {
+      "source_path": "replace-with-authorized-track.mp3",
+      "artist": "Artist name",
+      "album": "Album name",
+      "title": "Track title",
+      "track_number": 1,
+      "source_url": "https://example.org/release-page",
+      "license_id": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "attribution": "",
+      "rights_confirmed": false
+    }
+  ]
+}

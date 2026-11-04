@@ -14,7 +14,8 @@ services:
     ports:
       - "${NAVIDROME_BIND_ADDRESS}:${NAVIDROME_PORT}:4533"
     volumes:
-      - "${MUSIC_ROOT}:/music:ro"
+      - "${MUSIC_ROOT}/permanent:/music/permanent:ro"
+      - "${MUSIC_ROOT}/cache:/music/cache:ro"
       - "${NAVIDROME_DATA}:/data"
     networks:
       - music-internal
@@ -61,21 +62,24 @@ services:
         condition: service_healthy
 
   ingest:
-    image: ${REGISTRY_PREFIX}/library/alpine:3.21.3
+    build:
+      context: ./ingest
+      args:
+        PYTHON_BASE_IMAGE: ${REGISTRY_PREFIX}/library/python:3.12.9-alpine3.21
     profiles: ["ingest"]
-    restart: unless-stopped
+    user: "${PUID}:${PGID}"
     read_only: true
     cap_drop:
       - ALL
     security_opt:
       - no-new-privileges:true
     tmpfs:
-      - /tmp:rw,noexec,nosuid,size=1m
-    command: ["sh", "-c", "echo 'Ingest placeholder: add your own loader.'; exec sleep infinity"]
+      - /tmp:rw,noexec,nosuid,size=16m
+    network_mode: none
+    command: ["--help"]
     volumes:
-      - "${MUSIC_ROOT}/cache:/music/cache"
-    networks:
-      - music-internal
+      - "${MUSIC_ROOT}/incoming:/incoming:ro"
+      - "${MUSIC_ROOT}/permanent:/permanent:rw"
 
 networks:
   music-internal:

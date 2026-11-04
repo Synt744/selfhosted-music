@@ -19,9 +19,9 @@ jobs:
           cache-dependency-path: requirements-dev.txt
       - name: Install test tools
         run: python -m pip install -r requirements-dev.txt
-      - name: Run cleaner tests
-        run: python -m pytest -q cleaner/tests
+      - name: Run tests
+        run: python -m pytest -q cleaner/tests ingest/tests
       - name: Lint Python
-        run: python -m ruff check cleaner
+        run: python -m ruff check cleaner ingest
       - name: Validate Compose configuration
         run: docker compose --env-file .env.example config --quiet
